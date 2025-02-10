@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-const Login = () => {
+const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -20,7 +20,7 @@ const Login = () => {
     if (!email || !password) {
       setError('Email and password are required');
     } else {
-      setEmail('');
+      setError('');
       // TODO: call api and log the user in
     }
   };
@@ -89,4 +89,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;
