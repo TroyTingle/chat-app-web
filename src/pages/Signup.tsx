@@ -9,6 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -93,6 +94,23 @@ const Signup = () => {
           >
             Signup
           </Button>
+          <Box
+            sx={{
+              mt: 2,
+              textAlign: 'center',
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <Box sx={{ flex: 1, height: '1px', backgroundColor: 'grey.500' }} />
+            <Typography variant='body2' sx={{ mx: 2 }}>
+              Or
+            </Typography>
+            <Box sx={{ flex: 1, height: '1px', backgroundColor: 'grey.500' }} />
+          </Box>
+          <Box sx={{ textAlign: 'center', mt: 2 }}>
+            <Link to='/signin'>Sign In</Link>
+          </Box>
         </Box>
       </Paper>
     </Container>
