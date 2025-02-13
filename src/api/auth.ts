@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { User } from '../model/models';
-
-const API_URL = 'https://your-api-server.com'; // Replace with your API server URL
+import { API_URL } from '../utils/constants';
 
 interface AuthResponse {
   status: number;
