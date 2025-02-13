@@ -8,7 +8,7 @@ const MenuBar: React.FC = () => {
   return (
     <Box
       sx={{
-        width: '100px',
+        width: '3vw',
         bgcolor: '#1c3045',
         height: '100vh',
         display: 'flex',

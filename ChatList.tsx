@@ -1,14 +1,13 @@
+import React, { useState } from 'react';
+import { Box, Fab, Typography, Modal } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, Fab, Modal, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { getChats } from '../api/chats';
-import { Chat } from '../model/models';
 import ChatListItem from './ChatListItem';
 import CreateChat from './CreateChat';
+import { getChats } from './api';
 
 const ChatList = () => {
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [selectedChatId, setSelectedChatId] = useState<Chat['id']>();
+  const [chats, setChats] = useState([]);
+  const [selectedChatId, setSelectedChatId] = useState(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
