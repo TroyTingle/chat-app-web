@@ -9,24 +9,34 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { signup } from '../api/auth';
 
 const Signup = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!email || !password) {
-      setError('Email and password are required');
+    if (!email || !password || !username) {
+      setError('All fields are required');
     } else {
       setError('');
-      // TODO: call api and redirect to signin
+      try {
+        const signupResp = await signup(email, password, username);
+        if (signupResp.status === 201) {
+          navigate('/signin');
+        } else {
+          setError(signupResp.message!);
+        }
+      } catch {
+        throw new Error('Something went wrong');
+      }
     }
   };
-
   return (
     <Container
       component='main'
@@ -47,6 +57,8 @@ const Signup = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          width: '100%',
+          maxWidth: '650px',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
