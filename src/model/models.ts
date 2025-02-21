@@ -1,5 +1,5 @@
 export interface User {
-  userId: number;
+  userId: string;
   username: string;
   password: string;
   email: string;
@@ -10,7 +10,7 @@ export interface User {
 }
 
 export interface FriendRequest {
-  id: number;
+  id: string;
   sender: User;
   receiver: User;
   status: RequestStatus;
@@ -28,17 +28,14 @@ export enum RequestStatus {
 }
 
 export interface Chat {
-  id: number;
+  id: string;
   name: string;
-  creator: User;
   messages: Message[];
   participants: User[];
 }
-
 export interface Message {
-  id: number;
   content: string;
-  timestamp: Date;
-  sender: User;
-  chat: Chat;
+  timestamp: string;
+  senderUsername: User["username"];
+  chatId: Chat["id"];
 }
