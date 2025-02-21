@@ -1,32 +1,23 @@
-import React, { createContext, useContext, useState } from 'react';
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useAuthStore } from "../store/authStore";
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  login: () => void;
-  logout: () => void;
-}
+// AuthProvider will just check if the user is logged in and update the Zustand store.
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const setUser = useAuthStore((state) => state.setUser);
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+  useEffect(() => {
+    axios
+      .get("/api/auth/me")
+      .then((res) => {
+        if (res.data.user) {
+          setUser(res.data.user);
+        }
+      })
+      .catch(() => setUser(null));
+  }, [setUser]);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const login = () => setIsAuthenticated(true);
-  const logout = () => setIsAuthenticated(false);
-
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <>{children}</>;
 };
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export default AuthProvider;

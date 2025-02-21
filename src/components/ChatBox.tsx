@@ -3,10 +3,12 @@ import React, { useEffect } from "react";
 import { getMessages } from "../api/messages";
 import useChatWebSocket from "../hooks/useChatWebSocket";
 import { Message } from "../model/models";
+import { useAuthStore } from "../store/authStore";
 import useChatStore from "../store/chatStore";
 import ChatMessage from "./ChatMessage";
 
 const ChatBox: React.FC<{ chatId: string }> = () => {
+  const user = useAuthStore((state) => state.user)!;
   const chatId = useChatStore((state) => state.selectedChatId);
   const messages = useChatStore((state) => state.messages[chatId || ""] || []);
   const setMessages = useChatStore((state) => state.setMessages);
@@ -14,7 +16,7 @@ const ChatBox: React.FC<{ chatId: string }> = () => {
   const [newMessage, setNewMessage] = React.useState<string>("");
 
   const handleSend = () => {
-    sendMessage(newMessage, chatId!, "userID"); // Replace with actual user ID
+    sendMessage(newMessage, chatId!, user.username); // Replace with actual user ID
     setNewMessage("");
   };
 
@@ -36,7 +38,7 @@ const ChatBox: React.FC<{ chatId: string }> = () => {
             <ChatMessage
               message={message.content}
               timestamp={new Date(message.timestamp).toLocaleDateString()}
-              isOwnMessage={message.senderUsername === "userID"} // Replace with actual user ID
+              isOwnMessage={message.senderUsername === user.username} // Replace with actual user ID
             />
           ))}
         </List>

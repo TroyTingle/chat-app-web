@@ -1,12 +1,5 @@
 export interface User {
-  userId: string;
   username: string;
-  password: string;
-  email: string;
-  role: UserRole;
-  sentRequests: FriendRequest[];
-  receivedRequests: FriendRequest[];
-  friends: User[];
 }
 
 export interface FriendRequest {
