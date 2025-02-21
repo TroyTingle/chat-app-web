@@ -6,6 +6,9 @@ export const logger = {
   warn: (message: string) => {
     console.warn(`[Warning]: ${message}`);
   },
+  debug: (message: string) => {
+    console.info(`[Debug]: ${message}`);
+  },
   info: (message: string) => {
     console.info(`[Info]: ${message}`);
   },

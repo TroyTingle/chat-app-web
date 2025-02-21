@@ -1,25 +1,42 @@
-import { Box, Button, List, TextField } from '@mui/material';
-import React, { useState } from 'react';
-import { Message } from '../model/models';
-import ChatMessage from './ChatMessage';
+import { Box, Button, List, TextField } from "@mui/material";
+import React, { useEffect } from "react";
+import { getMessages } from "../api/messages";
+import useChatWebSocket from "../hooks/useChatWebSocket";
+import { Message } from "../model/models";
+import useChatStore from "../store/chatStore";
+import ChatMessage from "./ChatMessage";
 
-const ChatBox: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState<string>('');
+const ChatBox: React.FC<{ chatId: string }> = () => {
+  const chatId = useChatStore((state) => state.selectedChatId);
+  const messages = useChatStore((state) => state.messages[chatId || ""] || []);
+  const setMessages = useChatStore((state) => state.setMessages);
+  const { sendMessage } = useChatWebSocket(chatId);
+  const [newMessage, setNewMessage] = React.useState<string>("");
 
   const handleSend = () => {
-    console.log('Sending message:', input);
+    sendMessage(newMessage, chatId!, "userID"); // Replace with actual user ID
+    setNewMessage("");
   };
+
+  useEffect(() => {
+    if (chatId) {
+      getMessages(chatId).then((messages) => setMessages(chatId, messages));
+    }
+  }, [chatId, setMessages]);
+
+  if (!chatId) {
+    return <Box>Please select a chat to start Messaging</Box>;
+  }
 
   return (
     <Box display='flex' flexDirection='column' height='100vh' width='82vw'>
       <Box flexGrow={1} overflow='auto' p={2}>
         <List>
-          {messages.map((message) => (
+          {messages.map((message: Message) => (
             <ChatMessage
               message={message.content}
-              timestamp={message.timestamp.toLocaleDateString()}
-              isOwnMessage={true}
+              timestamp={new Date(message.timestamp).toLocaleDateString()}
+              isOwnMessage={message.senderUsername === "userID"} // Replace with actual user ID
             />
           ))}
         </List>
@@ -28,15 +45,15 @@ const ChatBox: React.FC = () => {
         <TextField
           fullWidth
           variant='outlined'
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
           onKeyUp={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleSend();
             }
           }}
         />
-        <Button variant='contained' color='primary' onClick={handleSend}>
+        <Button variant='contained' color='primary' onClick={() => handleSend()}>
           Send
         </Button>
       </Box>
