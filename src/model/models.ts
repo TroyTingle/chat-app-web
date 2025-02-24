@@ -1,12 +1,5 @@
 export interface User {
-  userId: string;
   username: string;
-  password: string;
-  email: string;
-  role: UserRole;
-  sentRequests: FriendRequest[];
-  receivedRequests: FriendRequest[];
-  friends: User[];
 }
 
 export interface FriendRequest {
@@ -34,6 +27,7 @@ export interface Chat {
   participants: User[];
 }
 export interface Message {
+  id?: string;
   content: string;
   timestamp: string;
   senderUsername: User["username"];

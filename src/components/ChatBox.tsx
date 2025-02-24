@@ -1,32 +1,19 @@
-import { Box, Button, List, TextField } from "@mui/material";
-import React, { useEffect } from "react";
-import { getMessages } from "../api/messages";
+import { Box, List, TextField } from "@mui/material";
+import React from "react";
 import useChatWebSocket from "../hooks/useChatWebSocket";
 import { Message } from "../model/models";
-import useChatStore from "../store/chatStore";
 import ChatMessage from "./ChatMessage";
 
 const ChatBox: React.FC<{ chatId: string }> = () => {
-  const chatId = useChatStore((state) => state.selectedChatId);
-  const messages = useChatStore((state) => state.messages[chatId || ""] || []);
-  const setMessages = useChatStore((state) => state.setMessages);
-  const { sendMessage } = useChatWebSocket(chatId);
+  const { sendMessage } = useChatWebSocket("ID");
   const [newMessage, setNewMessage] = React.useState<string>("");
 
+  const messages: Message[] = [];
+
   const handleSend = () => {
-    sendMessage(newMessage, chatId!, "userID"); // Replace with actual user ID
+    sendMessage(newMessage, "ID", "me"); // Replace with actual user ID
     setNewMessage("");
   };
-
-  useEffect(() => {
-    if (chatId) {
-      getMessages(chatId).then((messages) => setMessages(chatId, messages));
-    }
-  }, [chatId, setMessages]);
-
-  if (!chatId) {
-    return <Box>Please select a chat to start Messaging</Box>;
-  }
 
   return (
     <Box display='flex' flexDirection='column' height='100vh' width='82vw'>
@@ -34,9 +21,10 @@ const ChatBox: React.FC<{ chatId: string }> = () => {
         <List>
           {messages.map((message: Message) => (
             <ChatMessage
+              key={message.id} // Add a key prop to avoid React warnings
               message={message.content}
               timestamp={new Date(message.timestamp).toLocaleDateString()}
-              isOwnMessage={message.senderUsername === "userID"} // Replace with actual user ID
+              isOwnMessage={message.senderUsername === "me"} // Replace with actual user ID
             />
           ))}
         </List>
@@ -53,9 +41,6 @@ const ChatBox: React.FC<{ chatId: string }> = () => {
             }
           }}
         />
-        <Button variant='contained' color='primary' onClick={() => handleSend()}>
-          Send
-        </Button>
       </Box>
     </Box>
   );

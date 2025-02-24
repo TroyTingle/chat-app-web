@@ -1,15 +1,15 @@
-import React from 'react';
-import { Navigate, RouteProps } from 'react-router';
-import { useAuth } from '../context/AuthContext';
+import React, { useEffect } from "react";
+import { Navigate, Outlet, RouteProps } from "react-router";
+import useAuthStore from "../store/authStore";
 
-const ProtectedRoute: React.FC<RouteProps> = ({ element }) => {
-  const { isAuthenticated } = useAuth();
+const ProtectedRoute: React.FC<RouteProps> = () => {
+  const { isAuthenticated, checkAuth } = useAuthStore();
 
-  if (!isAuthenticated) {
-    return <Navigate to='/signin' />;
-  }
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
-  return element;
+  return isAuthenticated ? <Outlet /> : <Navigate to='/login' replace />;
 };
 
 export default ProtectedRoute;
