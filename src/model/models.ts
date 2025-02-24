@@ -27,6 +27,7 @@ export interface Chat {
   participants: User[];
 }
 export interface Message {
+  id?: string;
   content: string;
   timestamp: string;
   senderUsername: User["username"];

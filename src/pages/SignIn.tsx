@@ -1,25 +1,22 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { useAuthStore } from "../store/authStore";
+import useAuthStore from "../store/authStore";
 
 const SignIn = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const { login } = useAuthStore();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const response = await axios.post("/api/auth/login", { email, password });
-    if (response.status === 200) {
-      login(response.data.user);
-      navigate("/");
-    } else {
-      setError("Login Failed");
+    try {
+      await login({ username, password }, navigate);
+    } catch {
+      setError("Failed to Login");
     }
   };
 
@@ -59,11 +56,11 @@ const SignIn = () => {
         <Box component='form' onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <TextField
             fullWidth
-            label='Email Address'
+            label='Username'
             margin='normal'
             type='input'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             error={!!error}
           />
           <TextField

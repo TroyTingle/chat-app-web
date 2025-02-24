@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_API_URL } from "../utils/constants";
 import { logger } from "../utils/logger";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: BASE_API_URL,
   timeout: 10000, // 10 seconds
   withCredentials: true,

@@ -1,19 +1,14 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, Modal, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { getChats } from "../api/chats";
+import { useState } from "react";
 import { Chat } from "../model/models";
-import useChatStore from "../store/chatStore";
 import ChatListItem from "./ChatListItem";
 import CreateChat from "./CreateChat";
 
 const ChatList = () => {
   const [open, setOpen] = useState(false);
-  const { chats, setChats, selectChat, selectedChatId } = useChatStore();
-
-  useEffect(() => {
-    getChats().then(setChats).catch(console.error);
-  }, [setChats]);
+  const chats: Chat[] = [];
+  const selectedChatId = "selectedID";
 
   const handleNewChat = () => {
     setOpen(true);
@@ -46,7 +41,9 @@ const ChatList = () => {
           chatName={chat.name}
           lastMessage={chat.messages ? chat.messages[chat.messages.length - 1]?.content : ""}
           isSelected={chat.id === selectedChatId}
-          onClick={() => selectChat(chat.id)}
+          onClick={function (): void {
+            throw new Error("Function not implemented.");
+          }}
         />
       ))}
 
