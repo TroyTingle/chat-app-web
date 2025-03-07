@@ -1,18 +1,32 @@
 import { Box, List, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import useChatWebSocket from "../hooks/useChatWebSocket";
 import { Message } from "../model/models";
+import useAuthStore from "../store/authStore";
+import useChatStore from "../store/chatStore";
+import useMessageStore from "../store/messageStore";
 import ChatMessage from "./ChatMessage";
 
-const ChatBox: React.FC<{ chatId: string }> = () => {
-  const { sendMessage } = useChatWebSocket("ID");
+const ChatBox: React.FC = () => {
+  const { selectedChatId } = useChatStore();
+  const { user } = useAuthStore();
+  const { sendMessage } = useChatWebSocket(selectedChatId);
+  const { messagesByChatId, fetchMessages } = useMessageStore();
   const [newMessage, setNewMessage] = React.useState<string>("");
 
-  const messages: Message[] = [];
+  useEffect(() => {
+    if (selectedChatId) {
+      fetchMessages(selectedChatId);
+    }
+  }, [selectedChatId, fetchMessages]);
+
+  const messages = selectedChatId ? messagesByChatId[selectedChatId] || [] : [];
 
   const handleSend = () => {
-    sendMessage(newMessage, "ID", "me"); // Replace with actual user ID
-    setNewMessage("");
+    if (selectedChatId) {
+      sendMessage(newMessage, selectedChatId, user!.username); // Replace with actual user ID
+      setNewMessage("");
+    }
   };
 
   return (
@@ -24,7 +38,7 @@ const ChatBox: React.FC<{ chatId: string }> = () => {
               key={message.id} // Add a key prop to avoid React warnings
               message={message.content}
               timestamp={new Date(message.timestamp).toLocaleDateString()}
-              isOwnMessage={message.senderUsername === "me"} // Replace with actual user ID
+              isOwnMessage={message.senderUsername === user?.username} // Replace with actual user ID
             />
           ))}
         </List>

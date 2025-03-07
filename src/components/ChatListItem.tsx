@@ -1,35 +1,31 @@
-import { Box, Grid2, Typography } from '@mui/material';
-import React from 'react';
+import { Box, Grid2, Typography } from "@mui/material";
+import React from "react";
 
 interface ChatListItemProps {
   chatName: string;
-  lastMessage: string;
+  lastMessage: string | undefined;
   isSelected: boolean;
   onClick: () => void;
 }
 
-const truncateMessage = (message: string, maxLength: number) => {
-  return message.length > maxLength
-    ? message.slice(0, maxLength - 4) + ' ...'
-    : message;
+const truncateMessage = (message: string | undefined, maxLength: number) => {
+  if (message === undefined) {
+    return undefined;
+  }
+  return message.length > maxLength ? message.slice(0, maxLength - 4) + " ..." : message;
 };
 
-const ChatListItem: React.FC<ChatListItemProps> = ({
-  chatName,
-  lastMessage,
-  isSelected,
-  onClick,
-}) => {
+const ChatListItem: React.FC<ChatListItemProps> = ({ chatName, lastMessage, isSelected, onClick }) => {
   return (
     <Box
       sx={{
         padding: 2,
-        backgroundColor: isSelected ? '#1171d1' : '#adbbc9',
-        color: isSelected ? 'primary.contrastText' : 'text.primary',
+        backgroundColor: isSelected ? "#1171d1" : "#adbbc9",
+        color: isSelected ? "primary.contrastText" : "text.primary",
         borderRadius: 1,
         marginBottom: 1,
-        cursor: 'pointer',
-        width: '15vw',
+        cursor: "pointer",
+        width: "15vw",
       }}
       onClick={onClick}
     >

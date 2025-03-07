@@ -1,11 +1,13 @@
 import { Client, StompSubscription } from "@stomp/stompjs";
 import { useEffect, useRef } from "react";
 import { Chat, Message } from "../model/models";
+import useMessageStore from "../store/messageStore";
 import { SOCKET_URL } from "../utils/constants";
 
 const useChatWebSocket = (chatId: Chat["id"] | null) => {
   const clientRef = useRef<Client | null>(null);
   const subscriptionRef = useRef<StompSubscription | null>(null);
+  const { addMessage } = useMessageStore();
 
   useEffect(() => {
     if (!chatId) return;
@@ -14,7 +16,10 @@ const useChatWebSocket = (chatId: Chat["id"] | null) => {
       brokerURL: SOCKET_URL,
       reconnectDelay: 5000,
       onConnect: () => {
-        subscriptionRef.current = client.subscribe(`/topic/chat/${chatId}`, () => {});
+        subscriptionRef.current = client.subscribe(`/topic/chat/${chatId}`, (message) => {
+          const newMessage: Message = JSON.parse(message.body);
+          addMessage(chatId, newMessage);
+        });
       },
       onDisconnect: () => console.warn("Disconnected from WebSocket"),
       onStompError: (frame) => console.error("STOMP Error:", frame),
@@ -27,7 +32,7 @@ const useChatWebSocket = (chatId: Chat["id"] | null) => {
       subscriptionRef.current?.unsubscribe();
       client.deactivate();
     };
-  }, [chatId]);
+  }, [addMessage, chatId]);
 
   const sendMessage = (content: string, chatId: string, senderUsername: string) => {
     if (!clientRef.current || !clientRef.current.connected || !chatId) return;
