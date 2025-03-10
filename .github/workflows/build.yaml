@@ -33,9 +33,9 @@ jobs:
 
       # Step 6: Build the docker image
       - name: Build Docker Image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/chat-app-api:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/chat-app-web:latest .
 
       # Step 7: Publish image to docker hub
       - name: Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-api:latest
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/chat-app-web:latest
 
