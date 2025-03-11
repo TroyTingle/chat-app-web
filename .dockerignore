@@ -5,7 +5,7 @@ node_modules
 /dist
 
 # Ignore local environment configuration files
-.env
+.env.local
 
 # Ignore IDE-specific files
 .vscode
