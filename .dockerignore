@@ -7,3 +7,4 @@
 !tsconfig.app.json
 !tsconfig.node.json
 !index.html
+!vite.config.ts
