@@ -1,19 +1,5 @@
-# Ignore node_modules
-node_modules
-
-# Ignore build artifacts from previous builds
-/dist
-
-# Ignore local environment configuration files
-.env.local
-
-# Ignore IDE-specific files
-.vscode
-.idea
-
-# Ignore logs
-*.log
-
-# Ignore Docker-related files
-Dockerfile
-.dockerignore
+*
+!src
+!public
+!package.json
+!package-lock.json
