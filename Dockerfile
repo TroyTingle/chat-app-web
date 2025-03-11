@@ -2,7 +2,7 @@
 FROM node:20-alpine AS build
 
 #Copy the .env file to the container
-COPY Dockerfile.env .env
+COPY .env.production .env
 
 # Set the working directory inside the container
 WORKDIR /app

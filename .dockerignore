@@ -9,3 +9,4 @@
 !index.html
 !vite.config.ts
 !nginx.conf
+!.env.production
