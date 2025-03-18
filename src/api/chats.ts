@@ -1,5 +1,5 @@
-import { api } from "../config/axiosConfig";
-import { Chat, User } from "../model/models";
+import { api } from "@/config/axiosConfig";
+import { Chat, User } from "@/model/models";
 
 const CHAT_API_URL = "/api/chats";
 

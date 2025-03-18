@@ -1,15 +1,15 @@
 import { Box, List, TextField } from "@mui/material";
 import React, { useEffect } from "react";
-import useChatWebSocket from "../hooks/useChatWebSocket";
-import { Message } from "../model/models";
-import useAuthStore from "../store/authStore";
-import useChatStore from "../store/chatStore";
-import useMessageStore from "../store/messageStore";
+import useChatWebSocket from "@/hooks/useChatWebSocket";
+import { Message } from "@/model/models";
+import useChatStore from "@/store/chatStore";
+import useMessageStore from "@/store/messageStore";
 import ChatMessage from "./ChatMessage";
+import useUserStore from "@/store/userStore";
 
 const ChatBox: React.FC = () => {
   const { selectedChatId } = useChatStore();
-  const { user } = useAuthStore();
+    const { user, fetchUser } = useUserStore();
   const { sendMessage } = useChatWebSocket(selectedChatId);
   const { messagesByChatId, fetchMessages } = useMessageStore();
   const [newMessage, setNewMessage] = React.useState<string>("");
@@ -18,7 +18,10 @@ const ChatBox: React.FC = () => {
     if (selectedChatId) {
       fetchMessages(selectedChatId);
     }
-  }, [selectedChatId, fetchMessages]);
+    if (!user){
+        fetchUser();
+    }
+  }, [selectedChatId, fetchMessages, user, fetchUser]);
 
   const messages = selectedChatId ? messagesByChatId[selectedChatId] || [] : [];
 

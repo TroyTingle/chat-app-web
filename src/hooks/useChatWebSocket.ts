@@ -1,8 +1,8 @@
 import { Client, StompSubscription } from "@stomp/stompjs";
 import { useEffect, useRef } from "react";
-import { Chat, Message } from "../model/models";
+import { Chat, Message } from "@/model/models";
 import useMessageStore from "../store/messageStore";
-import { SOCKET_URL } from "../utils/constants";
+import { SOCKET_URL } from "@/utils/constants";
 
 const useChatWebSocket = (chatId: Chat["id"] | null) => {
   const clientRef = useRef<Client | null>(null);

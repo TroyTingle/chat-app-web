@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { getChats } from "../api/chats";
-import { Chat } from "../model/models";
+import { getChats } from "@/api/chats";
+import { Chat } from "@/model/models";
 
 interface ChatState {
   chats: Chat[];

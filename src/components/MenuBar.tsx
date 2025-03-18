@@ -1,7 +1,6 @@
 import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { Box, List, ListItemButton, ListItemIcon } from '@mui/material';
-import React from 'react';
 
 const MenuBar: React.FC = () => {
   return (

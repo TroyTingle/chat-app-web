@@ -1,6 +1,6 @@
 import { Box, Button, Chip, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { create1To1Chat } from '../api/chats';
+import { create1To1Chat } from '@/api/chats';
 
 interface CreateChatProps {
   onClose: () => void;

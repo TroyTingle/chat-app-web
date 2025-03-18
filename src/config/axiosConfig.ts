@@ -1,6 +1,6 @@
 import axios from "axios";
-import { BASE_API_URL } from "../utils/constants";
-import { logger } from "../utils/logger";
+import { BASE_API_URL } from "@/utils/constants";
+import { logger } from "@/utils/logger";
 
 export const api = axios.create({
   baseURL: BASE_API_URL,

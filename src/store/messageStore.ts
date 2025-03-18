@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import { getMessagesForChatId } from "../api/messages";
-import { Message } from "../model/models";
+import { getMessagesForChatId } from "@/api/messages";
+import { Message } from "@/model/models";
 
 interface MessageState {
   messagesByChatId: { [chatId: string]: Message[] };

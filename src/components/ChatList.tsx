@@ -1,8 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Chat } from "../model/models";
-import useChatStore from "../store/chatStore";
+import { Chat } from "@/model/models";
+import useChatStore from "@/store/chatStore";
 import ChatListItem from "./ChatListItem";
 import CreateChat from "./CreateChat";
 
