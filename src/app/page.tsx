@@ -3,7 +3,7 @@ import ChatBox from '../components/ChatBox';
 import ChatList from '../components/ChatList';
 import React from "react";
 
-const Chat: React.FC = () => {
+const Page: React.FC = () => {
     return (
         <Box sx={{ display: 'flex' }}>
             {/*<MenuBar />*/}
@@ -13,4 +13,4 @@ const Chat: React.FC = () => {
     );
 };
 
-export default Chat;
+export default Page;

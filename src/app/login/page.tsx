@@ -6,7 +6,7 @@ import Link from "next/link";
 import { api } from "@/config/axiosConfig";
 import {loginSchema} from "@/validation/login";
 
-const Login = () => {
+const Page = () => {
   const router = useRouter();
   const [error, setError] = useState("");
   const [formErrors, setFormErrors] = useState<{ username?: string; password?: string }>({});
@@ -117,4 +117,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Page;
