@@ -1,36 +1,48 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
-import React, {FormEvent, useState} from "react";
-import { useRouter } from 'next/router'
+import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { api } from "@/config/axiosConfig";
+import {loginSchema} from "@/validation/login";
 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [formErrors, setFormErrors] = useState<{ username?: string; password?: string }>({});
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
+    setFormErrors({});
+
     const formData = new FormData(event.currentTarget);
-    const username = formData.get("username");
-    const password = formData.get("password");
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
 
-    await api.post("/api/auth/login", { username, password }).then((resp) => {
-        console.log(resp);
-        if (resp.status === 200) {
-            router.push("/");
-        } else {
-            setError(resp.data);
-        }
-    }).catch(() => {
-        setError("An unknown error occurred");
-    })
+    // Validate using Zod
+    const result = loginSchema.safeParse({ username, password });
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors;
+      setFormErrors({
+        username: errors.username?.[0],
+        password: errors.password?.[0],
+      });
+      return;
+    }
+      const response = await api.post("/api/auth/login", { username, password });
+      if (response.status === 200) {
+        await router.push("/");
+      } else if (response.status < 500) {
+        setError("Invalid username or password");
+      } else {
+        setError("Something went wrong, please try again later");
+      }
   };
-
   return (
     <Container
-      component='main'
-      maxWidth='xs'
+      component="main"
+      maxWidth="xs"
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -54,30 +66,32 @@ const Login = () => {
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography variant='h5'>Sign In</Typography>
+        <Typography variant="h5">Sign In</Typography>
         {error && (
-          <Typography color='error' sx={{ mt: 2 }}>
+          <Typography color="error" sx={{ mt: 2 }}>
             {error}
           </Typography>
         )}
-        <Box component='form' onSubmit={handleSubmit} sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
           <TextField
             fullWidth
-            label='Username'
-            margin='normal'
-            type='input'
-            name='username'
-            error={!!error}
+            label="Username"
+            margin="normal"
+            type="text"
+            name="username"
+            error={!!formErrors.username}
+            helperText={formErrors.username}
           />
           <TextField
             fullWidth
-            label='Password'
-            margin='normal'
-            type='password'
-            name='password'
-            error={!!error}
+            label="Password"
+            margin="normal"
+            type="password"
+            name="password"
+            error={!!formErrors.password}
+            helperText={formErrors.password}
           />
-          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <Box
@@ -89,13 +103,13 @@ const Login = () => {
             }}
           >
             <Box sx={{ flex: 1, height: "1px", backgroundColor: "grey.500" }} />
-            <Typography variant='body2' sx={{ mx: 2 }}>
+            <Typography variant="body2" sx={{ mx: 2 }}>
               Or
             </Typography>
             <Box sx={{ flex: 1, height: "1px", backgroundColor: "grey.500" }} />
           </Box>
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link href='/signup'>Sign Up</Link>
+            <Link href="/signup">Sign Up</Link>
           </Box>
         </Box>
       </Paper>

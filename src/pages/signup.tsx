@@ -9,26 +9,23 @@ const Signup = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      const formData = new FormData(event.currentTarget);
-      const email = formData.get('email');
-      const password = formData.get('password');
-      const username = formData.get('username');
-      if (!email || !password || !username) {
-          setError("All fields are required");
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const username = formData.get('username');
+    if (!email || !password || !username) {
+      setError("All fields are required");
+    } else {
+      setError("");
+      const response = await api.post("/api/auth/signup", {email, password, username});
+      if (response.status === 200) {
+        await router.push("/login");
       } else {
-          setError("");
-          await api.post("/api/auth/signup", {email, password, username}).then((res) => {
-              if (res.status === 200) {
-                  router.push("/login");
-              } else {
-                  setError(res.data);
-              }
-          }).catch(() => {
-              setError("An unknown error occurred");
-          })
+        setError(response.data);
       }
-  }
+    }
+}
   return (
     <Container
       component='main'
@@ -66,6 +63,7 @@ const Signup = () => {
           <TextField
             fullWidth
             label='Username'
+            name='username'
             margin='normal'
             type='input'
             error={!!error}
@@ -73,6 +71,7 @@ const Signup = () => {
           <TextField
             fullWidth
             label='Email Address'
+            name='email'
             margin='normal'
             type='input'
             error={!!error}
@@ -80,6 +79,7 @@ const Signup = () => {
           <TextField
             fullWidth
             label='Password'
+            name='password'
             margin='normal'
             type='password'
             error={!!error}
