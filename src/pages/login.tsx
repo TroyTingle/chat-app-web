@@ -1,11 +1,12 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import React, {FormEvent, useState} from "react";
-import { router } from "next/client";
+import { useRouter } from 'next/router'
 import Link from "next/link";
-import axios from "axios";
+import { api } from "@/config/axiosConfig";
 
 const Login = () => {
+  const router = useRouter();
   const [error, setError] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -14,7 +15,8 @@ const Login = () => {
     const username = formData.get("username");
     const password = formData.get("password");
 
-    await axios.post("/api/auth/login", { username, password }).then((resp) => {
+    await api.post("/api/auth/login", { username, password }).then((resp) => {
+        console.log(resp);
         if (resp.status === 200) {
             router.push("/");
         } else {

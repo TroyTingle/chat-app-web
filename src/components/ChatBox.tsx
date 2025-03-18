@@ -9,7 +9,7 @@ import useUserStore from "@/store/userStore";
 
 const ChatBox: React.FC = () => {
   const { selectedChatId } = useChatStore();
-  const { user } = useUserStore();
+    const { user, fetchUser } = useUserStore();
   const { sendMessage } = useChatWebSocket(selectedChatId);
   const { messagesByChatId, fetchMessages } = useMessageStore();
   const [newMessage, setNewMessage] = React.useState<string>("");
@@ -18,7 +18,10 @@ const ChatBox: React.FC = () => {
     if (selectedChatId) {
       fetchMessages(selectedChatId);
     }
-  }, [selectedChatId, fetchMessages]);
+    if (!user){
+        fetchUser();
+    }
+  }, [selectedChatId, fetchMessages, user, fetchUser]);
 
   const messages = selectedChatId ? messagesByChatId[selectedChatId] || [] : [];
 
