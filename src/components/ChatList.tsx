@@ -1,3 +1,4 @@
+"use client";
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Fab, Modal, Typography } from "@mui/material";
 import { useEffect, useState } from "react";

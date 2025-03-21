@@ -1,3 +1,4 @@
+"use client";
 import { Box, List, TextField } from "@mui/material";
 import React, { useEffect } from "react";
 import useChatWebSocket from "@/hooks/useChatWebSocket";
