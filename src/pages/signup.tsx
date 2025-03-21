@@ -6,7 +6,7 @@ import { api } from "@/config/axiosConfig";
 import Link from "next/link";
 import {router} from "next/client";
 
-const Page = () => {
+const Signup = () => {
     const [error, setError] = useState("");
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -111,4 +111,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default Signup;

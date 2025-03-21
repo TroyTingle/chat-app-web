@@ -1,12 +1,13 @@
+"use client"
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import React, { FormEvent, useState } from "react";
 import Link from "next/link";
-import {loginSchema} from "@/validation/login";
-import {BASE_API_URL} from "@/utils/constants";
+import { loginSchema } from "@/validation/login";
+import { BASE_API_URL } from "@/utils/constants";
 import { useRouter } from 'next/navigation'
 
-const Page = () => {
+const Login = () => {
     const [error, setError] = useState("");
     const [formErrors, setFormErrors] = useState<{ username?: string; password?: string }>({});
     const router = useRouter();
@@ -39,7 +40,7 @@ const Page = () => {
             body: JSON.stringify({ username, password }),
         });
         if (response.ok) {
-            await router.push("/");
+          router.push("/");
         } else if (response.status < 500) {
             setError("Invalid username or password");
         } else {
@@ -124,4 +125,4 @@ const Page = () => {
     );
 };
 
-export default Page;
+export default Login;
