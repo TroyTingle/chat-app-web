@@ -1,4 +1,3 @@
-"use client";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import React, { FormEvent, useState } from "react";
