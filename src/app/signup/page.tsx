@@ -5,7 +5,7 @@ import { api } from "@/config/axiosConfig";
 import Link from "next/link";
 import {router} from "next/client";
 
-const Signup = () => {
+const Page = () => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -102,7 +102,7 @@ const Signup = () => {
             <Box sx={{ flex: 1, height: "1px", backgroundColor: "grey.500" }} />
           </Box>
           <Box sx={{ textAlign: "center", mt: 2 }}>
-            <Link href='/login'>Sign In</Link>
+            <Link href='/src/app/login'>Sign In</Link>
           </Box>
         </Box>
       </Paper>
@@ -110,4 +110,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Page;
