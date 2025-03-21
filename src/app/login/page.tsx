@@ -1,15 +1,16 @@
+'use client';
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@mui/material";
 import React, { FormEvent, useState } from "react";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import { api } from "@/config/axiosConfig";
 import {loginSchema} from "@/validation/login";
+import {BASE_API_URL} from "@/utils/constants";
+import { useRouter } from 'next/navigation'
 
 const Page = () => {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [formErrors, setFormErrors] = useState<{ username?: string; password?: string }>({});
+  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,8 +31,14 @@ const Page = () => {
       });
       return;
     }
-      const response = await api.post("/api/auth/login", { username, password });
-      if (response.status === 200) {
+      const response = await fetch(BASE_API_URL + "/api/auth/login",{
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+      });
+      if (response.ok) {
         await router.push("/");
       } else if (response.status < 500) {
         setError("Invalid username or password");
