@@ -4,7 +4,6 @@ import { Avatar, Box, Button, Container, Paper, TextField, Typography } from "@m
 import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import { loginSchema } from "@/validation/login";
-import { BASE_API_URL } from "@/utils/constants";
 import { useRouter } from 'next/navigation'
 
 const Login = () => {
@@ -31,9 +30,8 @@ const Login = () => {
             });
             return;
         }
-        const response = await fetch(BASE_API_URL + "/api/auth/login",{
+        const response = await fetch("/api/auth/login",{
             method: "POST",
-            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
