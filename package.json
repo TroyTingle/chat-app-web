@@ -16,7 +16,7 @@
     "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.9",
     "cookie": "^1.0.2",
-    "next": "15.2.2",
+    "next": "15.2.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "sockjs-client": "^1.6.1",
