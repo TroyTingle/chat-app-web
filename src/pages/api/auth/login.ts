@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader("Set-Cookie", serialize("token", response.data.token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: "none",
       path: "/"
     }))
     res.status(200).json({ message: "Authentication Successful" })
