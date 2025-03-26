@@ -9,7 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      path: "/"
+      path: "/",
+      domain: process.env.COOKIE_DOMAIN,
     }))
     res.status(200).json({ message: "Authentication Successful" })
   }).catch((error) => {
