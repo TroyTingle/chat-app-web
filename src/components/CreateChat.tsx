@@ -37,7 +37,14 @@ const CreateChat: React.FC<CreateChatProps> = ({ onClose }) => {
         });
     } else {
       // Create a group chat
-      console.log('Creating group chat with users:', users);
+      createGroupChat(users)
+        .then(() => {
+            onClose();
+          })
+          .catch((error) => {
+            console.error('Error creating group chat:', error);
+            throw error;
+          });
     }
   };
 
