@@ -1,7 +1,6 @@
-"use client";
-import { Box, Button, Chip, TextField, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { create1To1Chat, createGroupChat } from '@/api/chats';
+import { create1To1Chat, createGroupChat } from "@/api/chats";
+import { Box, Button, Chip, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
 
 interface CreateChatProps {
   onClose: () => void;
@@ -9,12 +8,12 @@ interface CreateChatProps {
 
 const CreateChat: React.FC<CreateChatProps> = ({ onClose }) => {
   const [users, setUsers] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
 
   const handleAddUser = () => {
     if (inputValue && !users.includes(inputValue)) {
       setUsers([...users, inputValue]);
-      setInputValue('');
+      setInputValue("");
     }
   };
 
@@ -32,19 +31,19 @@ const CreateChat: React.FC<CreateChatProps> = ({ onClose }) => {
           onClose();
         })
         .catch((error) => {
-          console.error('Error creating 1-2-1 chat:', error);
+          console.error("Error creating 1-2-1 chat:", error);
           throw error;
         });
     } else {
       // Create a group chat
       createGroupChat(users)
         .then(() => {
-            onClose();
-          })
-          .catch((error) => {
-            console.error('Error creating group chat:', error);
-            throw error;
-          });
+          onClose();
+        })
+        .catch((error) => {
+          console.error("Error creating group chat:", error);
+          throw error;
+        });
     }
   };
 
@@ -53,13 +52,13 @@ const CreateChat: React.FC<CreateChatProps> = ({ onClose }) => {
       <Typography variant='h6' gutterBottom>
         Create a New Chat
       </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <TextField
           label='Add User'
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyUp={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               e.preventDefault();
               handleAddUser();
             }
@@ -70,17 +69,12 @@ const CreateChat: React.FC<CreateChatProps> = ({ onClose }) => {
           Add
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 2 }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", mb: 2 }}>
         {users.map((user) => (
-          <Chip
-            key={user}
-            label={user}
-            onDelete={() => handleDeleteUser(user)}
-            sx={{ mr: 1, mb: 1 }}
-          />
+          <Chip key={user} label={user} onDelete={() => handleDeleteUser(user)} sx={{ mr: 1, mb: 1 }} />
         ))}
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button variant='contained' color='secondary' onClick={handleSubmit}>
           Create Chat
         </Button>
