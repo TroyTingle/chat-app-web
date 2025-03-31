@@ -3,19 +3,11 @@ import React from "react";
 
 interface ChatListItemProps {
   chatName: string;
-  lastMessage: string | undefined;
   isSelected: boolean;
   onClick: () => void;
 }
 
-const truncateMessage = (message: string | undefined, maxLength: number) => {
-  if (message === undefined) {
-    return undefined;
-  }
-  return message.length > maxLength ? message.slice(0, maxLength - 4) + " ..." : message;
-};
-
-const ChatListItem: React.FC<ChatListItemProps> = ({ chatName, lastMessage, isSelected, onClick }) => {
+const ChatListItem: React.FC<ChatListItemProps> = ({ chatName, isSelected, onClick }) => {
   return (
     <Box
       sx={{
@@ -33,11 +25,7 @@ const ChatListItem: React.FC<ChatListItemProps> = ({ chatName, lastMessage, isSe
         <Grid2>
           <Typography variant='h6'>{chatName}</Typography>
         </Grid2>
-        <Grid2 container justifyContent='flex-end'>
-          <Typography variant='body2' color='textSecondary'>
-            {truncateMessage(lastMessage, 40)}
-          </Typography>
-        </Grid2>
+        <Grid2 container justifyContent='flex-end'></Grid2>
       </Grid2>
     </Box>
   );

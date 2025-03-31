@@ -1,15 +1,17 @@
-"use client";
-import AddIcon from "@mui/icons-material/Add";
-import { Box, Fab, Modal, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { Chat } from "@/model/models";
 import useChatStore from "@/store/chatStore";
+import AddIcon from "@mui/icons-material/Add";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Box, Drawer, Fab, IconButton, Modal, Typography, useMediaQuery } from "@mui/material";
+import { useEffect, useState } from "react";
 import ChatListItem from "./ChatListItem";
 import CreateChat from "./CreateChat";
 
 const ChatList = () => {
   const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const { chats, fetchChats, setSelectedChatId, selectedChatId } = useChatStore();
+  const isDesktop = useMediaQuery("(min-width:768px)");
 
   useEffect(() => {
     fetchChats();
@@ -18,14 +20,21 @@ const ChatList = () => {
   const handleNewChat = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
 
-  return (
+  const handleChatSelect = (chatId: string) => {
+    setSelectedChatId(chatId);
+    if (!isDesktop) {
+      setDrawerOpen(false); // Close the drawer on mobile after selecting a chat
+    }
+  };
+
+  const renderChatList = () => (
     <Box
       sx={{
-        width: "15vw",
         borderRight: "1px solid #ccc",
         height: "100vh",
         position: "relative",
@@ -44,9 +53,8 @@ const ChatList = () => {
         <ChatListItem
           key={chat.id}
           chatName={chat.name}
-          lastMessage={chat.messages ? chat.messages[chat.messages.length - 1]?.content : undefined}
           isSelected={chat.id === selectedChatId}
-          onClick={() => setSelectedChatId(chat.id)}
+          onClick={() => handleChatSelect(chat.id)}
         />
       ))}
 
@@ -66,6 +74,25 @@ const ChatList = () => {
           <CreateChat onClose={handleClose} />
         </Box>
       </Modal>
+    </Box>
+  );
+
+  return isDesktop ? (
+    renderChatList()
+  ) : (
+    <Box
+      sx={{
+        borderRight: "1px solid #ccc",
+        height: "100vh",
+        position: "relative",
+      }}
+    >
+      <IconButton onClick={() => setDrawerOpen(true)}>
+        <MenuIcon />
+      </IconButton>
+      <Drawer anchor='left' open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        {renderChatList()}
+      </Drawer>
     </Box>
   );
 };
